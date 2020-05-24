@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Confirm{% endblock %}
+
+{% block content %}
+    <div class="container wow fadeIn">
+        <div class="row">
+            <div class="col-md-12">
+              <ul class="stepper stepper-horizontal">
+                <li>
+                  <a href="{% url 'core:cartlist' %}">
+                    <span class="circle">1</span>
+                    <span class="label text-muted">Cart Lists</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'core:check' %}">
+                    <span class="circle">2</span>
+                    <span class="label text-muted">Shipping Information</span>
+                  </a>
+                </li>
+                <li class="completed">
+                  <a href="{% url 'core:invoice' %}">
+                    <span class="circle">3</span>
+                    <span class="label">Confirmation</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="row p-3">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6 text-right">
+                                <p class="font-weight-bold mb-2">Invoice #{{ object.list_number }}</p>
+                                <p class="text-muted">Ordered Date: {{ object.ordered_date }}</p>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row pb-5 p-3">
+                            <div class="col-md-6">
+                                <p class="font-weight-bold mb-4">Client Information</p>
+                                <p class="mb-1">{{ object.user }}</p>
+                                <p>{{ object.shipping_info.country }}</p>
+                                <p>{{ object.shipping_info.zip }}</p>
+                                <p>{{ object.shipping_info.str_adr }}</p>
+                                <p>{{ object.shipping_info.apt_adr }}</p>
+                            </div>
+
+                            <div class="col-md-6 text-right">
+                                <p class="font-weight-bold mb-4">Payment Details</p>
+                                <p class="mb-1"><span class="text-muted">VAT: </span> 1425782</p>
+                                <p class="mb-1"><span class="text-muted">VAT ID: </span> 10253642</p>
+                                <p class="mb-1"><span class="text-muted">Payment Type: </span> Root</p>
+                                <p class="mb-1"><span class="text-muted">Name: </span> John Doe</p>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col-md-12">
+                                <table id="dt-cell-sellection" class="table" cellspacing="0" width="100%">
+                                    <thead class="black white-text">
+                                    <tr>
+                                        <th class="th-sm" scope="col">#</th>
+                                        <th class="th-sm" scope="col">Item name</th>
+                                        <th class="th-sm" scope="col">Price</th>
+                                        <th class="th-sm" scope="col">Quantity</th>
+                                        <th class="th-sm" scope="col">Subtotal</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    {% for ordered_item in object.items.all %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>{{ ordered_item.item.title }}</td>
+                                            <td>
+                                                {% if ordered_item.item.discount_price %}
+                                                    <del>${{ ordered_item.item.price }}</del>  ${{ ordered_item.item.discount_price }}
+                                                {% else %}
+                                                    ${{ ordered_item.item.price }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ ordered_item.quantity }}
+                                            </td>
+                                            <td>
+                                                {% if ordered_item.item.discount_price %}
+                                                    $ {{ ordered_item.subtotal_discount_price }}
+                                                {% else %}
+                                                    $ {{ ordered_item.subtotal_price }}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                        <tr>
+                                            <td colspan="4"></td>
+                                            <td><b><u><font size="4">
+                                                **Coupon Applied:
+                                                {% if object.has_coupon %}
+                                                    {{ object.has_coupon.code }}
+                                                {% else %}
+                                                    None
+                                                {% endif %}
+                                            </font></u></b></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-row-reverse bg-dark text-white p-4">
+                            <div class="py-3 px-5 text-right">
+                                <div class="mb-2">Grand Total</div>
+                                <div class="h2 font-weight-light"><u>$ {{ object.total_c_price }}</u></div>
+                            </div>
+                            <div class="py-3 text-right">
+                                <div class="mb-2"></div>
+                                <div class="h2 font-weight-light">=</div>
+                            </div>
+
+                            <div class="py-3 px-5 text-right">
+                                <div class="mb-2">Discount</div>
+                                {% if object.has_coupon %}
+                                    <div class="h2 font-weight-light">{{ object.has_coupon.saved }}</div>
+                                {% else %}
+                                    <div class="h2 font-weight-light">0</div>
+                                {% endif %}
+                            </div>
+                            <div class="py-3 text-right">
+                                <div class="mb-2"></div>
+                                <div class="h2 font-weight-light">-</div>
+                            </div>
+
+                            <div class="py-3 px-5 text-right">
+                                <div class="mb-2">Sub - Total amount</div>
+                                <div class="h2 font-weight-light">$ {{ object.total_orig_price }}</div>
+                            </div>
+                        </div>
+                        <a class="btn btn-success float-right" href="{% url 'core:send' %}">Order Confirmed</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

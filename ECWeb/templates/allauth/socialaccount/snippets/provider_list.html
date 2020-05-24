@@ -1,0 +1,24 @@
+{% load socialaccount %}
+
+{% get_providers as socialaccount_providers %}
+
+{% for provider in socialaccount_providers %}
+    {% if forloop.counter == 1 %}
+        <a type="button" title="{{provider.name}}"
+                class="socialaccount_provider {{provider.id}} btn"
+                style="background-color:#3b5998"
+                href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+                <font color="white"><i class="fab fa-facebook-f pr-1"></i> {{provider.name}}</font></a>
+    {% elif forloop.counter == 2 %}
+        <a type="button" title="{{provider.name}}"
+                class="socialaccount_provider {{provider.id}} btn"
+                href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+                <i class="fab fa-google"></i>  {{provider.name}}</a>
+    {% elif forloop.counter == 3 %}
+        <a type="button" title="{{provider.name}}"
+                class="socialaccount_provider {{provider.id}} btn"
+                style="background-color:#FFE66F"
+                href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+            <font color="red"><i class="fab fa-weibo"></i></font>  {{provider.name}}</a>
+    {% endif %}
+{% endfor %}

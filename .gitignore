@@ -1,0 +1,4 @@
+bin/
+lib/
+pyenc.cfg
+/ECWeb/db.sqlite3

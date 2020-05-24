@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Cart List{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <ul class="stepper stepper-horizontal">
+                  <li class="active">
+                    <a href="{% url 'core:cartlist' %}">
+                      <span class="circle">1</span>
+                      <span class="label">Cart Lists</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'core:check' %}">
+                      <span class="circle">2</span>
+                      <span class="label  text-muted">Shipping Information</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'core:invoice' %}">
+                      <span class="circle">3</span>
+                      <span class="label  text-muted">Confirmation</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="table-responsive text-nowrap">
+
+                <table id="dt-cell-sellection" class="table" cellspacing="0" width="100%">
+                    {% if object.total_orig_price %}
+                        <thead class="black white-text">
+                            <tr>
+                                <th class="th-sm" scope="col">#</th>
+                                <th class="th-sm" scope="col">Item name</th>
+                                <th class="th-sm" scope="col">Price</th>
+                                <th class="th-sm" scope="col">Quantity</th>
+                                <th class="th-sm" scope="col">Subtotal</th>
+                            </tr>
+                        </thead>
+                    {% endif %}
+                    <tbody>
+                    {% for ordered_item in object.items.all %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ ordered_item.item.title }}</td>
+                            <td>
+                                {% if ordered_item.item.discount_price %}
+                                    <del>${{ ordered_item.item.price }}</del>  ${{ ordered_item.item.discount_price }}
+                                {% else %}
+                                    ${{ ordered_item.item.price }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'core:remove1' ordered_item.item.slug %}"><i class="fas fa-minus mr-2"></i></a>
+                                {{ ordered_item.quantity }}
+                                <a href="{% url 'core:add1' ordered_item.item.slug %}"><i class="fas fa-plus ml-2"></i></a>
+                            </td>
+                            <td>
+                                {% if ordered_item.item.discount_price %}
+                                    $ {{ ordered_item.subtotal_discount_price }}
+                                {% else %}
+                                    $ {{ ordered_item.subtotal_price }}
+                                {% endif %}
+                                <a href="{% url 'core:remove' ordered_item.item.slug %}"><i class="fas fa-trash-alt float-right"></i></a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5"><font size="4"><b> Your Cart is Empty Now!</b></font></td>
+                            <td colspan="5">
+                                <a class="btn btn-primary float-right" href="/"><u><font size="4">
+                                    GO Shopping
+                                    <i class="fas fa-arrow-right">
+                                    </i></font></u></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if object.total_orig_price %}
+                        <tr>
+                            <td colspan="4"><b><font size="4">Total Price</font></b></td>
+                            <td>
+                                <b><u><font size="4">$ {{ object.total_orig_price }}</font></u></b>
+                                {% if object.total_saved > 0 %}
+                                    <span class="badge badge-success ml-2" style="font-size: 0.9em">
+                                        Saving Total ${{ object.total_saved }} !
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <a class="btn btn-primary btn-rounded float-right" href="/checkout">
+                                    Proceed to Checkout
+                                    <i class="fas fa-arrow-right">
+                                    </i></a>
+                                <a class="button secondaryAction" href="/"><u><font size="4">
+                                    Continue Shopping
+                                </font></u></a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+

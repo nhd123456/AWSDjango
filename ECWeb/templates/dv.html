@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load in_list %}
+
+{% block content %}
+    <main>
+        <div class="container wow fadeIn">
+            <div class="row">
+                <div class="col-5 mt-3" style="position:relative; right:300px">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <h4><b><u>Item Status</u></b></h4>
+                                <hr>
+                                <table id="dt-cell-sellection" class="table" cellspacing="0" width="100%">
+                                    <thead class="grey white-text">
+                                        <tr>
+                                            <th class="th-sm" scope="col">品項</th>
+                                            <th class="th-sm" scope="col">已售</th>
+                                            <th class="th-sm" scope="col">庫存量</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for item in items %}
+                                            <tr>
+                                                <td>{{ item.title }}</td>
+                                                <td>{{ item.title|inlist }}</td>
+                                                <td>{{ item.volume }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 mt-3" style="position:relative; right:300px">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <h4><b><u>Sale Summary</u></b></h4>
+                                <hr>
+                                <table id="dt-cell-sellection" class="table" cellspacing="0" width="100%">
+                                    <thead class="grey white-text">
+                                        <tr>
+                                            <th class="th-sm" scope="col">Item name</th>
+                                            <th class="th-sm" scope="col">Sold</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for sold_item in soldout %}
+                                            <tr>
+                                                <td>{{ sold_item.item__title }}</td>
+                                                <td>{{ sold_item.total_sold }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
