@@ -65,8 +65,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'email',
         ],
         'APP': {
-            'client_id': '341741532728-m8h23bk5ogqm5moc8l5db0enuo19es9h.apps.googleusercontent.com',
-            'secret': 'Rx3PtMkKO3kd24Bhe0Gx3G5M',
+            'client_id': '',
+            'secret': '',
             'key': ''
         }
     },
@@ -195,8 +195,8 @@ AUTHENTICATION_BACKENDS = [
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_FORMS = {'signup': 'core.forms.signUP'}
-SOCIAL_AUTH_FACEBOOK_KEY = '568702750748237' # Facebook App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '9fcf3ad4327fcf54ea8ef1485f46ce80' # Facebook App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = '' # Facebook App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '' # Facebook App Secret
 
 BATON = {
     'SITE_HEADER': 'Dashboard',
